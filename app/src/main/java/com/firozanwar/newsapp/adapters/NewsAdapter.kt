@@ -40,6 +40,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         return differ.currentList.size
     }
 
+    private var onItemClickListner: ((Article) -> Unit)? = null
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
 
         val article = differ.currentList[position]
@@ -52,15 +53,13 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             tvDescription.text = article.description
             tvPublishedAt.text = article.publishedAt
 
-            setOnItemClickListner {
+            setOnClickListener() {
                 onItemClickListner?.let {
                     it(article)
                 }
             }
         }
     }
-
-    private var onItemClickListner: ((Article) -> Unit)? = null
 
     fun setOnItemClickListner(listener: (Article) -> Unit) {
         onItemClickListner = listener
