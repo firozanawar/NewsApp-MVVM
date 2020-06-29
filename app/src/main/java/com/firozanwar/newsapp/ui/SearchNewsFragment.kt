@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,8 +16,10 @@ import com.firozanwar.newsapp.R
 import com.firozanwar.newsapp.adapters.NewsAdapter
 import com.firozanwar.newsapp.util.Resource
 import com.firozanwar.newsapp.util.Utils
+import kotlinx.android.synthetic.main.fragment_breaking_news.*
 import kotlinx.android.synthetic.main.fragment_saved_news.*
 import kotlinx.android.synthetic.main.fragment_search_news.*
+import kotlinx.android.synthetic.main.fragment_search_news.paginationProgressBar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -66,15 +69,15 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / Utils.QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.searchNewsPage == totalPages
-                        if(isLastPage){
-                            rvSearchNews.setPadding(0, 0, 0, 0)
+                        if(isLastPage) {
+                            rvBreakingNews.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Log.e(TAG, "An error occured: $message")
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
